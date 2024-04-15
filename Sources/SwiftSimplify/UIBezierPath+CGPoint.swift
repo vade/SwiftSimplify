@@ -30,6 +30,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+import CoreGraphics
+
+#if os(iOS)
+
 import UIKit
 
 // MARK: - UIBezierPath Extension
@@ -66,6 +70,8 @@ public extension UIBezierPath {
     }
     
 }
+
+#endif
 
 // MARK: - CGPoint Extension
 
