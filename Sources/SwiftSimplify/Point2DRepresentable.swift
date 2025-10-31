@@ -32,6 +32,7 @@
 
 import CoreGraphics
 import CoreLocation
+import simd
 
 public protocol Point2DRepresentable {
     var xValue: Float { get }
@@ -94,4 +95,14 @@ extension CGPoint: Point2DRepresentable {
     public var yValue: Float { Float(y) }
     
     public var cgPoint: CGPoint { self }
+}
+
+
+extension simd_float2 : Point2DRepresentable
+{
+    public var xValue: Float { self.x }
+    public var yValue: Float { self.y }
+    
+    public var cgPoint: CGPoint { CGPoint(x: Double(x), y: Double(y) ) }
+
 }
