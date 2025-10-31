@@ -37,7 +37,8 @@ import Foundation
 
 public enum SwiftSimplify {
     
-    public static func simplify<P: Point2DRepresentable>(_ points: [P], tolerance: Float?, highestQuality: Bool = false) -> [P] {
+    
+    public static func simplify<C>(_ points: C, tolerance: Float?, highestQuality: Bool = false) -> C where C: RandomAccessCollection & RangeReplaceableCollection, C.Element: Point2DRepresentable, C.Index == Int {
         guard points.count > 1 else {
             return points
         }
@@ -49,14 +50,14 @@ public enum SwiftSimplify {
         return result
     }
     
-    private static func simplifyRadialDistance<P: Point2DRepresentable>(_ points: [P], tolerance: Float) -> [P] {
+    private static func simplifyRadialDistance<C>(_ points: C, tolerance: Float) -> C where C: RandomAccessCollection & RangeReplaceableCollection, C.Element: Point2DRepresentable, C.Index == Int {
         guard points.count > 2 else {
             return points
         }
         
         var prevPoint = points.first!
-        var newPoints = [prevPoint]
-        var currentPoint: P!
+        var newPoints:C = [prevPoint] as! C
+        var currentPoint: C.Element!
         
         for i in 1..<points.count {
             currentPoint = points[i]
@@ -73,8 +74,9 @@ public enum SwiftSimplify {
         return newPoints
     }
     
-    private static func simplifyDPStep<P: Point2DRepresentable>(_ points: [P], first: Int, last: Int, sqTolerance: Float, simplified: inout [P]) {
-        
+//    private static func simplifyDPStep<P: Point2DRepresentable>(_ points: [P], first: Int, last: Int, sqTolerance: Float, simplified: inout [P]) {
+    private static func simplifyDPStep<C>(_ points: C, first: Int, last: Int, sqTolerance: Float, simplified: inout C) where C: RandomAccessCollection & RangeReplaceableCollection, C.Element: Point2DRepresentable, C.Index == Int {
+
         guard last > first else {
             return
         }
@@ -100,13 +102,13 @@ public enum SwiftSimplify {
         }
     }
     
-    private static func simplifyDouglasPeucker<P: Point2DRepresentable>(_ points: [P], sqTolerance: Float) -> [P] {
+    private static func simplifyDouglasPeucker<C>(_ points: C, sqTolerance: Float) -> C where C: RandomAccessCollection & RangeReplaceableCollection, C.Element: Point2DRepresentable, C.Index == Int {
         guard points.count > 1 else {
-            return []
+            return [] as! C
         }
         
         let last = (points.count - 1)
-        var simplied = [points.first!]
+        var simplied:C = [points.first!] as! C
         simplifyDPStep(points, first: 0, last: last, sqTolerance: sqTolerance, simplified: &simplied)
         simplied.append(points.last!)
         
