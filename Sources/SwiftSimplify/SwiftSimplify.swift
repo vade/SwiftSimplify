@@ -56,7 +56,9 @@ public enum SwiftSimplify {
         }
         
         var prevPoint = points.first!
-        var newPoints:C = [prevPoint] as! C
+        var newPoints:C = C.init()
+        newPoints.append(prevPoint)
+
         var currentPoint: C.Element!
         
         for i in 1..<points.count {
@@ -104,11 +106,13 @@ public enum SwiftSimplify {
     
     private static func simplifyDouglasPeucker<C>(_ points: C, sqTolerance: Float) -> C where C: RandomAccessCollection & RangeReplaceableCollection, C.Element: Point2DRepresentable, C.Index == Int {
         guard points.count > 1 else {
-            return [] as! C
+            return C.init()
         }
         
         let last = (points.count - 1)
-        var simplied:C = [points.first!] as! C
+        var simplied:C = C.init()
+        simplied.append(points.first!)
+
         simplifyDPStep(points, first: 0, last: last, sqTolerance: sqTolerance, simplified: &simplied)
         simplied.append(points.last!)
         
